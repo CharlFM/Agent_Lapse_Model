@@ -338,6 +338,12 @@ All_lap_Data$PPB                        <-  gsub("[^[:digit:]]", "", toupper(All
 
 All_lap_Data$STATUS                     <-  gsub("[^[:alpha:]]", "", toupper(All_lap_Data$STATUS))
 
+All_lap_Data      <- All_lap_Data[All_lap_Data$VOICELOGGED <= seq(as.Date(fileXLSDate), length = 2, by = "-6 months")[2], ]
+All_lap_Data      <- All_lap_Data[All_lap_Data$AGENTNAME != "", ]
+All_lap_Data$Year <- format(All_lap_Data$VOICELOGGED, format = "%Y")
+
+All_lap_Data <- subset(All_lap_Data, select = -c(VOICELOGGED))
+
 NTUData        <- All_lap_Data
 NTUData$STATUS <- as.numeric(ifelse(NTUData$STATUS == "NTU", 1, 0))
 
