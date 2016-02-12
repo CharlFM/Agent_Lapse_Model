@@ -1,14 +1,17 @@
 
 
-test$pred <- predict(mod, data.matrix(test[, feature.names]))
+predictions <- predict(objModel, testDF[, predictorsNames])
 
-auc(roc(test$pred, as.factor(test$LAP))) # 0.6942144
+auc <- roc(testDF[,outcomeName], predictions)
+plot(auc)
 
-importance_matrix <- xgb.importance(feature.names, model = mod) 
-xgb.plot.importance(importance_matrix)
-
-
-
+imp    <-  varImp(objModel, scale = F)
+impdf  <-  imp$importance
+Vars   <-  rownames(impdf)
+Vals   <-  impdf$Overall
+impdf  <-  data.frame(Vars, Vals)
+impdf  <-  data.frame(impdf[impdf$Vals != 0, ])
+impdf  <-  impdf[with(impdf, order(-Vals)), ]
 
 
 
